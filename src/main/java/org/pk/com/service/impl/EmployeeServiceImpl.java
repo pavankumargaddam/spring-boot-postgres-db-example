@@ -1,7 +1,7 @@
 package org.pk.com.service.impl;
 
 import org.pk.com.domain.Employee;
-import org.pk.com.exception.RecordNotFoundException;
+import org.pk.com.exception.ResourceNotFoundException;
 import org.pk.com.repository.EmployeeRepository;
 import org.pk.com.service.EmployeeService;
 import org.slf4j.Logger;
@@ -34,13 +34,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeById(Long id) throws RecordNotFoundException {
+    public Employee getEmployeeById(Long id) throws ResourceNotFoundException {
         LOG.debug("getEmployeeById method started {}",id);
         Employee employee = employeeRepository.findById(id).orElse(null);
         if (nonNull(employee))
             return employee;
         else
-            throw new RecordNotFoundException("No employee record exist for given id");
+            throw new ResourceNotFoundException("No employee record exist for given id");
     }
 
     @Override
@@ -60,12 +60,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void deleteEmployeeById(Long id) throws RecordNotFoundException {
+    public void deleteEmployeeById(Long id) throws ResourceNotFoundException {
         LOG.debug("deleteEmployeeById method started {}",id);
         Employee employee = employeeRepository.findById(id).orElse(null);
         if (nonNull(employee))
             employeeRepository.deleteById(id);
         else
-            throw new RecordNotFoundException("No employee record exist for given id");
+            throw new ResourceNotFoundException("No employee record exist for given id");
     }
 }
