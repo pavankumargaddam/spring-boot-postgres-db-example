@@ -1,9 +1,7 @@
 # spring-boot-postgres-db
 Spring Boot Rest Project with Postgres Database
 
-# Using Embedded Server as Tomcat.
-
-#For Enabling JPA Audit. Please follow below steps.
+# For Enabling JPA Audit. Please follow below steps.
 
 In this article, we will discuss how can we configure JPA to automatically persist the CreatedBy, CreatedDate, LastModifiedBy, and LastModifiedDate columns for any entity. 
 
