@@ -6,7 +6,6 @@ import org.pk.com.repository.EmployeeRepository;
 import org.pk.com.service.EmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,27 +19,24 @@ import static java.util.Objects.nonNull;
 public class EmployeeServiceImpl implements EmployeeService {
     private static final Logger LOG = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     public List<Employee> getAllEmployees() {
         LOG.debug("getAllEmployees method started");
         List<Employee> employeeList = employeeRepository.findAll();
-        if (employeeList.size() > 0)
-            return employeeList;
-        else
-            return new ArrayList<>();
+        return employeeList.size() > 0 ? employeeList : new ArrayList<>();
     }
 
     @Override
     public Employee getEmployeeById(Long id) throws ResourceNotFoundException {
         LOG.debug("getEmployeeById method started {}",id);
-        Employee employee = employeeRepository.findById(id).orElse(null);
-        if (nonNull(employee))
-            return employee;
-        else
-            throw new ResourceNotFoundException("No employee record exist for given id");
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No employee record exist for given id"));
     }
 
     @Override
@@ -62,10 +58,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteEmployeeById(Long id) throws ResourceNotFoundException {
         LOG.debug("deleteEmployeeById method started {}",id);
-        Employee employee = employeeRepository.findById(id).orElse(null);
-        if (nonNull(employee))
-            employeeRepository.deleteById(id);
-        else
-            throw new ResourceNotFoundException("No employee record exist for given id");
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No employee record exist for given id"));
+            employeeRepository.deleteById(employee.getId());
     }
 }

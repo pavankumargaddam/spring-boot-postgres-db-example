@@ -28,7 +28,7 @@ public class EmployeeResource {
     public ResponseEntity<List<Employee>> getAllEmployees() throws ResourceNotFoundException {
         LOG.debug("getAllEmployees method started");
         List<Employee> list = service.getAllEmployees();
-        if(list.size()<=0){
+        if (list.size() <= 0) {
             throw new ResourceNotFoundException("Employees are not found");
         }
         return new ResponseEntity<>(list, new HttpHeaders(), HttpStatus.OK);
@@ -36,11 +36,11 @@ public class EmployeeResource {
 
     @GetMapping("/employees/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) throws ResourceNotFoundException {
-        LOG.debug("getEmployeeById method started {}",id);
+        LOG.debug("getEmployeeById method started {}", id);
         Employee entity;
-        try{
+        try {
             entity = service.getEmployeeById(id);
-        }catch (ResourceNotFoundException e){
+        } catch (ResourceNotFoundException e) {
             throw e;
         }
         return new ResponseEntity<>(entity, new HttpHeaders(), HttpStatus.OK);
@@ -48,14 +48,14 @@ public class EmployeeResource {
 
     @PostMapping
     public ResponseEntity<Employee> createOrUpdateEmployee(@Valid @RequestBody Employee employee) throws ResourceNotFoundException {
-        LOG.debug("createOrUpdateEmployee method started {}",employee);
+        LOG.debug("createOrUpdateEmployee method started {}", employee);
         Employee updated = service.createOrUpdateEmployee(employee);
         return new ResponseEntity<>(updated, new HttpHeaders(), HttpStatus.OK);
     }
 
     @DeleteMapping("/employees/{id}")
     public HttpStatus deleteEmployeeById(@PathVariable("id") Long id) throws ResourceNotFoundException {
-        LOG.debug("deleteEmployeeById method started {}",id);
+        LOG.debug("deleteEmployeeById method started {}", id);
         service.deleteEmployeeById(id);
         return HttpStatus.FORBIDDEN;
     }

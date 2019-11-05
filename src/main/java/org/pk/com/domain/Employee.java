@@ -1,5 +1,7 @@
 package org.pk.com.domain;
 
+import org.pk.com.audit.Auditable;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -8,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "employee")
-public class Employee implements Serializable {
+public class Employee extends Auditable<String> implements Serializable {
 
     @Id
     @GeneratedValue
