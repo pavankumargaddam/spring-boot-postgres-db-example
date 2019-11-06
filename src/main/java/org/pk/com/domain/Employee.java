@@ -10,6 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "employee")
+@IdClass(DocumentId.class)
 public class Employee extends Auditable<String> implements Serializable {
 
     @Id
@@ -27,6 +28,9 @@ public class Employee extends Auditable<String> implements Serializable {
     @Column(name = "email")
     @Email(message = "email should be valid email")
     private String email;
+
+    @Id
+    private int version;
 
     public Long getId() {
         return id;
@@ -60,6 +64,14 @@ public class Employee extends Auditable<String> implements Serializable {
         this.email = email;
     }
 
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,6 +92,7 @@ public class Employee extends Auditable<String> implements Serializable {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", version=" + version +
                 '}';
     }
 }

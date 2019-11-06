@@ -34,32 +34,28 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee getEmployeeById(Long id) throws ResourceNotFoundException {
-        LOG.debug("getEmployeeById method started {}",id);
+        LOG.debug("getEmployeeById method started {}", id);
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No employee record exist for given id"));
     }
 
     @Override
     public Employee createOrUpdateEmployee(Employee employee) {
-        LOG.debug("createOrUpdateEmployee method started {}",employee);
-        Employee employeeRecord = employeeRepository.findById(employee.getId()).orElse(null);
-        if (nonNull(employeeRecord)) {
-            LOG.debug("update the record");
-            employeeRecord.setEmail(employee.getEmail());
-            employeeRecord.setFirstName(employee.getFirstName());
-            employeeRecord.setLastName(employee.getLastName());
-            return employeeRepository.save(employeeRecord);
+        LOG.debug("createOrUpdateEmployee method started {}", employee);
+        if (employee.getId() == null) {
+            employee.setId(employeeRepository.getId());
+            employee.setVersion(0);
         } else {
-            LOG.debug("save the record");
-            return employeeRepository.save(employee);
+            employee.setVersion(employee.getVersion() + 1);
         }
+        return employeeRepository.save(employee);
     }
 
     @Override
     public void deleteEmployeeById(Long id) throws ResourceNotFoundException {
-        LOG.debug("deleteEmployeeById method started {}",id);
+        LOG.debug("deleteEmployeeById method started {}", id);
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No employee record exist for given id"));
-            employeeRepository.deleteById(employee.getId());
+        employeeRepository.deleteById(employee.getId());
     }
 }
